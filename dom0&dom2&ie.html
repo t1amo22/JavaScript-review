@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>dom0,dom2</title>
+</head>
+
+<body>
+    <button id="btn">click</button>
+    <script>
+    window.onload = function() {
+        var obtn = document.getElementById("btn");
+        myAddEvent(obtn, fn, "click");
+    }
+
+    function myAddEvent(obj, fn, ev) {
+        if (obj.attachEvent) {
+            obj.attachEvent("on" + ev, fn);
+        } else {
+            obj.addEventListener(ev, fn, false);
+        };
+    }
+
+    function fn() {
+        alert("hi");
+    }
+    </script>
+</body>
+
+</html>
