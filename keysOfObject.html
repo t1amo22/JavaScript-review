@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Objet</title>
+    <script src="jquery.js"></script>
+</head>
+
+<body>
+    请输入您的姓名和年龄：
+    <input type="text">
+    <input type="text">
+    <button id="btn">提交</button>
+    <p id="showMsg"></p>
+    <script>
+    $("#btn").click(function() {
+        alert("hi");
+        var name = $("input:eq(0)").val();
+        var age = $("input:eq(1)").val();
+        $("#showMsg").html("您的姓名是" + name + " </ br > 您的年龄是 " + age);
+        var person = {
+
+            name: name,
+            age: age
+        };
+        keysOfObject(person);
+    })
+
+
+
+    function keysOfObject(obj) {
+        for (var key in obj) {
+            console.log(key);
+        }
+    }
+    </script>
+</body>
+
+</html>
