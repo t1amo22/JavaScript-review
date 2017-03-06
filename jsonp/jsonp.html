@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jsonp</title>
+</head>
+<body>
+	<script type="text/javascript">  
+    function jsonpCallback(result) {  
+        
+        for(var i in result) {  
+            alert(i+":"+result[i]);//循环输出a:1,b:2,etc.  
+        }  
+    }  
+</script>  
+
+<!-- 其他域的脚本 -->
+<script type="text/javascript" src="jsonp.php?callback=jsonpCallback"></script>  
+</body>
+</html>
