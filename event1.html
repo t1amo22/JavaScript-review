@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript中的事件模型</title>
+</head>
+
+<body id="body">
+    <!--     DOM事件：
+	    我们在浏览器窗口里面使用鼠标键盘执行的一些操作
+
+	    比如点击一个元素呀：onmousedown、onmouseup、onclick、ondbclick
+	    鼠标事件：mouseover、mouseout、mouseove
+	    网页：onload、onunload、
+	    表单：onchange
+
+
+    onload 事件可用于检查访客的浏览器类型和版本，以便基于这些信息来加载不同版本的网页。
+   
+
+
+事件处理程序：当事件发生时对事件作出的反应（JavaScript代码）
+
+javascript中有两种事件模型：DOM0，DOM2。
+
+DOM0：
+
+事件注册：
+		element.onclick=fname;
+		unciton fname(){};
+
+		或者在元素的标签里头
+		<button onclick="fname()">试一试</button>
+
+	tips:同一个元素注册相同的事件，比如一个div元素点击它让他执行2个function，它只会执行后面注册的那个
+
+		比如：
+		window.onload=funciton(){
+		    alert(1);
+		}
+		window.onload=funciton(){
+		    alert(2);
+		}  只会弹出2哦
+
+	事件删除：window.onload=null;
+
+DOM2:
+
+   在DOM0中，事件发生直接调用事件处理程序，没有事件的传播过程，
+   但是在DOM2中，事件有个传播过程，事件捕获---事件处理程序运行---事件冒泡
+
+   怎么理解呢？ -->
+    <div id="outer" style="width:400px; height: 400px;border:1px solid red">
+        outer
+        <div id="inner" style="width:300px; height: 300px;border:1px solid black">
+            inner
+        </div>
+    </div>
+    <script>
+    /* 当我们点击了inner的时候，会先弹出inner,又弹出outer,HTML,BODY,#document，事件有个冒泡的过程
+
+       	 事件冒泡：事件从目标元素一直上升到达document*/
+
+    /*chrome,firefox都支持两种事件，捕获和冒泡，IE仅支持冒泡。
+     所以，在我们能看到的所有事件处理的包装类中，添加的事件都是冒泡事件。
+*/
+    document.getElementById("outer").onclick = function() {
+        //事件中this指的是这个DOM对象
+        alert(this.firstChild.nodeValue);
+
+    }
+    document.getElementById("inner").onclick = function(event) {
+
+        alert(this.firstChild.nodeValue);
+
+        //在DOM中，我们的event，也就是我们的事件对象就是函数里的参数event
+        alert(event); // [object MouseEvent]
+        alert(event.target) //Object HTMLDivElement event.target就是事件的DOM对象
+        alert(event.target.nodeName) //我们可以获得这个事件发生的那个DOM对象的标签名
+
+
+        //现在我要阻止事件的冒泡，也就是说点击inner之后不会有事件的传播啦
+        event.stopPropagation(); //FOR DOM
+
+
+        /*在IE中，event指的是window.event
+        为了兼容性：*/
+        var event = event || window.event;
+
+        /*获取事件源：（也就是相应的目标DOM对象）*/
+        var target = event.target || event.srcElement;
+
+        /* IE阻止传播：*/
+        window.event.cancelBubble = true;
+
+
+
+    }
+
+
+    document.getElementById("html").onclick = function() {
+
+        alert(this.nodeName);
+    }
+    document.getElementById("body").onclick = function() {
+
+        alert(this.nodeName);
+    }
+    document.onclick = function() {
+        alert(this.nodeName);
+    }
+
+
+    /*  事件的注册：
+      DOM:*/
+    document.getElementById("inner").addEventListener("mouseover", a, false)
+
+    function a(e) {
+        alert(e.target.nodeName.toLowerCase());
+        e.stopPropagation();
+    }
+
+   /*true or false是决定在那个阶段被调用，一般都是false,因为呢我们的捕获事件没办法阻止呀*/ 
+   
+        /*IE:*/
+    /*在这里直接使用attach会出错， 因为不识别， 最好封装一下*/
+
+    if (window.attachEvent) {
+        document.getElementById("outer").attachEvent("onmouseover", b)
+
+        function b() {
+            alert(window.event.srcElement.nodeName);
+            window.event.cancelBubble = true;
+        }
+
+    }
+
+
+    /*事件的删除：
+      DOM:*/
+   // document.getElementById("inner").removeEventListener("mouseover", a, false)
+   /* IE:*/
+     /*这样保证不会报错*/
+      if (window.detachEvent) {
+      	document.getElementById("outer").detachEvent("onmouseover", b)
+      };
+        
+    </script>
+    <!-- DOM元素的属性和方法有什么？
+  
+  我们把document.getElementByID()/getElementsByTagName()/getElementsByClassName()
+  获得的DOM元素就是DOM对象，它包含了属性和方法
+  
+  属性：
+  		nodeName：返回大写的字符串，也就是标签名
+  		nodeValue ：返回节点的值
+  						元素节点：undefined||null
+  						文本节点：本身的值
+  		  						<p id="intro">Hello World!</p>
+  		  						document.getElementById("intro").firstChild            //[object Text]
+  		  						document.getElementById("intro").firstChild.nodeValue  //Hello World!
+  						属性节点：属性值
+   		nodeType :元素类型
+  			   				元素类型	NodeType
+  			   				元素			1
+  			   				属性			2
+  		       				文本			3
+  			   				注释			8
+  			   				文档			9
+   -->
+</body>
+
+</html>
