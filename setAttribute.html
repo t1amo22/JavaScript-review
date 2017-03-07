@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8">
+</head>
+
+<body>
+    <div id="mydiv"></div>
+    <script type="text/javascript">
+   
+
+    window.onload = function() {
+        var mydiv = document.getElementById("mydiv");
+        /*setAttribute()函数可以设置对象的属性，如果不存在此属性，则会创建此属性。要删除就用removeAttribute
+        '
+         这种设置、获取“属性”的差异性，究其根源，其实也是property与attribute的差异性所致。
+       */
+        mydiv.setAttribute("id", "newid");
+        
+       alert (mydiv.getAttribute("id"));
+        alert(mydiv.id);
+        
+
+       /* attribute和property的区别：
+        通过setAttribute设置的自定义属性，只能通过标准的getAttribute方法来获取.
+        同样通过点号方式设置的自定义属性也无法通过 标准方法getAttribute来获取。*/
+
+        /*attributes的每个数字索引以名值对(name=”value”)的形式存放了一个attribute节点。
+        attributes是会随着添加或删除attribute节点动态更新的。
+
+        
+       property就是一个属性，如果把DOM元素看成是一个普通的Object对象，那么property就是一个以名值对
+       (name=”value”)的形式存放在Object中的属性。要添加和删除property也简单多了，和普通的对象没啥分别：
+
+        elem.gameid = 880; // 添加
+        console.log( elem.gameid ) // 获取
+        delete elem.gameid // 删除  */
+
+        mydiv.setAttribute("myid","myid");
+         alert(mydiv.getAttribute("myid"));
+        alert(mydiv.myid);    //undefined
+    }
+
+
+/* 在IE6或者IE7浏览器中，setAttribute()函数可以使用，但是并不是对所有的属性都有效。    
+列举一下存在上述问题的属性:
+1.class
+2.for
+3.cellspacing
+4.cellpadding
+5.tabindex
+6.readonly
+7.maxlength
+8.rowspan
+9.colspan
+10.usemap
+11.frameborder
+12.contenteditable
+13.style*/
+
+// 为了解决上述问题就要写一个通用的跨浏览器的设置元素属性的接口方法:
+
+dom=(function(){
+var fixAttr={
+ tabindex:'tabIndex',
+ readonly:'readOnly',
+ 'for':'htmlFor',
+ 'class':'className',
+  maxlength:'maxLength',
+  cellspacing:'cellSpacing',
+  cellpadding:'cellPadding',
+  rowspan:'rowSpan',
+  colspan:'colSpan',
+  usemap:'useMap',
+  frameborder:'frameBorder',
+  contenteditable:'contentEditable'
+ },
+     
+ div=document.createElement('div');
+ div.setAttribute('class','t');
+     
+ var supportSetAttr = div.className === 't';
+     
+ return {
+  setAttr:function(el, name, val){
+  el.setAttribute(supportSetAttr ? name : (fixAttr[name] || name), val);
+  },
+  getAttr:function(el, name){
+  return el.getAttribute(supportSetAttr ? name : (fixAttr[name] || name));
+ }
+}
+})();
+    
+    </script>
+</body>
+
+</html>
