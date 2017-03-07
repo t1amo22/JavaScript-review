@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>事件模型的应用场景一</title>
+    <style>
+    body{
+        background-color: #F8DABD;
+    	width: 80%;
+    	margin: 20px auto;
+    }
+    li{
+    	list-style: none;
+    }
+    #navbar1 li:hover {
+        background-color: red;
+    }
+    
+    pre {
+        font: 16px Microsoft Yahei;
+        color: #4E5DCB;
+    }
+    </style>
+</head>
+
+<body>
+    比如说想达到一个效果：导航栏的背景颜色随着鼠标的移入和移出改变背景颜色 实现方法一： 用CSS的hover
+    <ul id="navbar1">
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+    </ul>
+    <code><pre>
+    	#navba1 li:hover {
+        background-color: red;
+    }
+    </pre></code> 方法二： 给每一个li元素添加一个onmouseover事件，改变他的背景颜色
+    <ul id="navbar2">
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+    </ul>
+    <code>
+	<pre >
+		var ali=document.getElementById("navbar2").getElementsByTagName("li");
+	for (var i = 0; i < ali.length; i++) {
+		ali[i].onmouseover=function(){
+			this.style.background="blue";
+		};
+		ali[i].onmouseout=function(){
+			this.style.background="";
+		}
+	};
+	</pre>
+</code>
+
+那如果标签li非常多呢，就会很影响我们的性能啦，这时候我们就可以进行“事件委托”，
+将事件绑定给我们的父标签，我们的父标签绑定事件后，一旦鼠标停留在父元素，
+我们就可以利用事件源找到我们的DOM的对象，再通过event.target.nodeName来判断是否为li元素，如果是，
+就改变这个对象的背景颜色
+
+ <ul id="navbar3">
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+        <li>导航栏</li>
+ </ul>
+
+ <code>
+ 	<pre>
+ 		
+   var ali = document.getElementById("navbar3");
+   ali.onmouseover=function(event){
+          var e= event ||window.event; //获取事件对象
+          var target=e.target || e.srcElement; //获取事件源：DOM对象
+
+          if (target.nodeName === "LI") {
+          	   target.style.background="green";
+          } ;
+   }
+
+  ali.onmouseout=function(event){
+          var e= event ||window.event; //获取事件对象
+          var target=e.target || e.srcElement; //获取事件源：DOM对象
+
+          if (target.nodeName === "LI") {
+          	   target.style.background="";
+          } ;
+   }
+ 	</pre>
+ </code>
+
+
+    <script>
+    var ali = document.getElementById("navbar2").getElementsByTagName("li");
+    for (var i = 0; i < ali.length; i++) {
+        ali[i].onmouseover = function() {
+            this.style.background = "blue";
+        };
+        ali[i].onmouseout = function() {
+            this.style.background = "";
+        }
+    };
+
+   var ali = document.getElementById("navbar3");
+   ali.onmouseover=function(event){
+          var e= event ||window.event; //获取事件对象
+          var target=e.target || e.srcElement; //获取事件源：DOM对象
+
+          if (target.nodeName === "LI") {
+          	   target.style.background="green";
+          } ;
+   }
+
+  ali.onmouseout=function(event){
+          var e= event ||window.event; //获取事件对象
+          var target=e.target || e.srcElement; //获取事件源：DOM对象
+
+          if (target.nodeName === "LI") {
+          	   target.style.background="";
+          } ;
+   }
+
+    </script>
+</body>
+
+</html>
