@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Jquery Ajax</title>
+    <script src="jquery.js"></script>
+</head>
+
+<body>
+    <div class="result">通过AJAX改变文本</div>
+    <button type="button" id="btn">$.ajax改变内容</button>
+
+    <div class="btn1">通过jQuery load() 方法改变内容</div>
+    <button type="button" id="btn1">jQuery load() 方法改变内容</button>
+
+     <div class="btn2">get() 方法改变内容</div>
+    <button type="button" id="btn2">jQuery get() 方法改变内容</button>
+
+     <div class="btn3">post() 方法改变内容</div>
+    <button type="button" id="btn3">jQuery post()方法改变内容</button>
+
+    <div class="btn4">原生的AJAX改变内容</div>
+    <button type="button" id="btn4">原生的AJAX改变内容</button>
+
+
+    <script>
+    $(document).ready(function() {
+        $("#btn").click(
+            function() {
+                $.ajax({
+                    type: "GET",
+                    url: 'ajax.txt',
+                    async: true,
+                    /* 默认值: true。默认设置下，所有请求均为异步请求。当AJAX发送请求后，在等待server返回数据的
+                    过程当中，前台会继续执行ajax后面的脚本。
+                     同步：当发送ajax请求时，所有代码都停止加载，当ajax执行完毕后才会执行。
+                     同步请求将锁住浏览器，用户其它操作必须等待请求完成才可以执行。*/
+                    dataType: 'text',
+                    /*返回的数据类型：
+                            "xml": 返回 XML 文档，可用 jQuery 处理。
+                            "html": 返回纯文本 HTML 信息；包含的 script 标签会在插入 dom 时执行。
+                            "script": 返回纯文本 JavaScript 代码。不会自动缓存结果。除非设置了 "cache" 参数。注意：在远程请求时(不在同一个域下)，所有 POST 请求都将转为 GET 请求。（因为将使用 DOM 的 script标签来加载）
+                            "json": 返回 JSON 数据 。
+                            "jsonp": JSONP 格式。使用 JSONP 形式调用函数时，如 "myurl?callback=?" jQuery 将自动替换 ? 为正确的函数名，以执行回调函数。
+                            "text": 返回纯文本字符串*/
+                    success: function(response, status) {
+                        alert(response); //返回内容
+                        alert(status); //返回的状态：success成功，
+                        $(".result").html(response);
+                    }
+                });
+
+
+            }
+        );
+        //会把btn1里面的文本改为返回的数据
+        $("#btn1").click(
+            function() {
+                $(".btn1").load("ajax.txt", function(response ,status, xhr) {//返回的顺序不能错:response,status/xhr
+                    alert(response);//内容
+                    alert(status);//状态
+                    alert(xhr);//对象
+                    $(".btn1").html(response);
+                })
+            })
+
+
+        $("#btn2").click(function(){
+            $.get('ajax.txt',function(response,status){
+                alert(response);
+                alert(status);
+                 $(".btn2").html(response);
+            })
+        })
+
+        $("#btn3").click(function(){//post可以传递数据，以json格式
+            $.post('ajax.txt', {name:"furong",age:20}, function(response,status){
+                alert(response);
+                alert(status);
+                 $(".btn3").html(response);
+            })
+        })
+
+
+       /* jQuery对象是包装DOM对象后产生的，但是jQuery无法使用DOM对象的任何方法，同理DOM对象也不能使用jQuery里的方法.乱使用会报错*/
+       document.getElementById("btn4").onclick=function(){
+            var xhr=new XMLHttpRequest();//创建一个xmlhttprequest的对象；
+            xhr.open('GET','ajax.txt',true)//用open方法创建一个心得http请求，请求包含了方法，地址，是否异步
+            //设置相应请求变化的函数,每当 readyState 改变时，就会触发 onreadystatechange 事件。
+            xhr.onreadystatechange=function(){
+               // readyState存有 XMLHttpRequest 的状态。从 0 到 4 发生变化。
+             
+              /*
+               0:请求未初始化
+               1：服务器连接已建立
+               2：请求已接收
+               3：请求处理中
+               4：请求已完成，相应已就绪
+               */
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                         //使用异步返回的数据进行DOM操作
+                         alert(xhr.responseText);
+                         document.getElementsByClassName("btn4")[0].innerhtml=xhr.responseText;
+                    };
+                };
+            };
+
+            //使用send()发送请求
+            xhr.send();
+
+        }
+
+        
+
+
+
+    });
+    </script>
+</body>
+
+</html>
