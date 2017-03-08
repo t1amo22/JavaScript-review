@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Array遍历的方法</title>
+</head>
+<body>
+	<script>
+	var arr=[1,2,3,4];
+
+	/*方法一:for语句*/
+
+	for (var i = 0; i < arr.length; i++) {
+		console.log(arr[i]);
+	};
+
+	/*方法二：forEach*/
+
+	arr.forEach(function(e){
+		console.log(e);
+	});
+
+	/*方法三：for-in*/
+
+	for(var key in arr){
+		console.log(arr[key]);
+	};
+
+	</script>
+</body>
+</html>
