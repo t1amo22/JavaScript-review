@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JS和jquery中的this</title>
+</head>
+
+<body>
+    this有四种使用场景呀
+    <br> 第一种： 比如说给一个div绑定了一个事件，事件处理函数当中this就是指的这个div对象
+    <div id="mydiv" style="width: 100px; height: 100px; border:1px solid red">
+        给这个div绑定click事件,点击后弹出this,在复习一下event
+    </div>
+    <br>第二种：全局函数的this是window，全局作用域的变量其实都是window对象的属性（property）。
+    <br>第三：通过构造函数 这个函数生成一个新对象（object）。这时，this就指这个新对象
+    <br>第四：局部环境中的this,指的就是局部环境的变量
+    <script>
+    window.onload = function(e) {
+        document.getElementById("mydiv").onclick = function() {
+            alert("事件处理函数当中this" + this); //弹出[Object HTMLDivElement]
+            alert("事件类型" + event.type); //弹出click
+            alert("事件源，也就是我们的DOM对象" + event.target); //弹出[Object HTMLDivElement]
+
+            alert("DOM对象的标签名" + event.target.nodeName); //弹出DIV
+
+        }
+
+
+        //全局函数
+
+        setTimeout(function() {
+            alert("全局函数的this：" + this);
+        }, 1000)
+
+        function a() {
+            alert(this); //window;
+        }
+
+        var a = a;
+        a(); //window
+
+        /*创建一个对象*/
+        //构造函数模式
+        function Box(color) {
+            this.color = color;
+            this.sayThis = function() {
+                alert(this.color);
+            }
+
+        };
+
+        //实例化一个对象
+
+        var box1 = new Box("green");
+        var box2 = new Box("red");
+        box1.sayThis();
+        box2.sayThis();
+
+        //用字面量方法创建一个对象，该对象有个属性和方法
+
+        var person = {
+            name: "lifurong",
+            sayName: function() {
+                console.log(this.name); //可以在对象的任何方法中使用this来访问对象的属性。
+            }
+        }
+
+        person.sayName();
+
+
+        // 无法重写this，因为它是一个关键字。
+
+        /*function test() {
+            var this = {}; // Uncaught SyntaxError: Unexpected token this 
+        }*/
+
+        // 使用apply和call来改变函数的上下文
+
+        var girl = {
+            name: "july",
+            age: 20
+        };
+
+        function fn() {
+            console.log(this);
+        }
+
+        fn();
+
+        fn.apply(girl); //Object {name: "july", age: 20}  相当于this指向了girl
+
+        fn.call(girl); //Object {name: "july", age: 20}this指向了girl
+
+        /*jquery中的this*/
+
+        /*$(function() {
+            $('button').click(function() {
+                alert(this); //this 表示原生的DOM
+                //$(this)表示当前对象，这里指的是button
+            })
+        });*/
+
+
+
+
+
+    }
+    </script>
+</body>
+
+</html>
