@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ES6的promise对象</title>
+</head>
+
+<body>
+    <p>promise对象主要就是执行我们的异步操作</p>
+    <p>比如在多个接口异步请求数据</p>
+    <p>通常这些接口之间没有关联（例如不需要前一个接口的数据作为后一个接口的参数），它们相互独立执行，当他们都请求完毕后才将他们返回的数据拼合成自己想要的数据，这个时候 Promise.all 方法就可以派上用场了。</p>
+    <p>promise对象可以理解为一次将要执行的异步操作（比如AJAX请求）</p>
+    <p>promise的then方法支持我们进行链式操作</p>
+    <script>
+    var p1 = new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve("p1的resolve，3秒后执行");
+        }, 3000)
+
+    });
+
+    var p2 = new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve("p2的resolve，1秒后才执行");
+        }, 1000)
+    });
+
+    /* all方法接受promise对象组成的数组，当这个数组里的所有的promise对象都变为resolve时，这个方法才会返回；*/
+    Promise.all([p1, p2])
+        .then(function(message) {
+            //Promise.all 方法会按照数组里面的顺序将结果返回。返回的是数组形式
+            console.log(message); //3秒后才输出["p1的resolve，3秒后执行", "p2的resolve，1秒后才执行"]
+        })
+
+
+    //链式操作
+
+    function printHello(ready) {
+        return new Promise(function(resolve, reject) {
+            if (ready) {
+                resolve("Hello");
+            } else {
+                reject("Good bye!");
+            }
+        });
+    }
+
+    function printWorld() {
+        alert("World");
+    }
+
+    function printExclamation() {
+        alert("!");
+    }
+     
+     //在多个任务的情况下 then 方法同样可以用一个清晰的方式完成。
+    printHello(false)
+        .then(function(message) {
+            alert(message);
+        },function(message){
+        	alert(message);
+        })
+        .then(printWorld)
+        .then(printExclamation);   //依次输出 goodbye world ！
+    </script>
+</body>
+
+</html>
