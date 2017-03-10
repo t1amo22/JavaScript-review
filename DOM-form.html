@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DOM-表单操作</title>
+</head>
+
+<body>
+    <form>
+        定义供文本输入的单行输入字段：
+        <input type="text" value="<input type='text'> "><br>
+         定义密码字段：
+        <input type="password">
+        <br>
+        <input type="button" name="" value="button disabled='true' " disabled="true">
+        <br>
+        <input type="checkbox" name="" value="girl" checked>checkbox
+        <br>
+        <input type="radio" name="sex" value="male" checked>radio checked="true"
+        
+        <input type="radio" name="sex" value="female">radio
+        <br>
+        
+        select下拉框,selected
+        <select name="number" >
+        	<option value="1">1</option>
+        	<option value="2">2</option>
+        	<option value="3" selected>3</option>
+        </select>
+        <br>
+        <br>
+    </form>
+    <script>
+    var domList = document.getElementsByTagName("input"),
+        i,
+        len;
+    //声明变量
+
+    //应该减少对domlist的访问，因为每次访问都会运行一次基于文档的查询，应该将
+    //从nodelist中的值缓存起来。
+    var len = domList.length;
+
+    for (i = 0; i < len; i++) {
+
+        if (domList[i].type == "checkbox") {
+            alert(domList[i].getAttribute("checked"));
+
+
+        };
+    };
+    </script>
+</body>
+
+</html>
