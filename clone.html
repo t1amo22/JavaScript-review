@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		给Object扩展一个方法clone，实现深度克隆对象。
+	</title>
+</head>
+<body>
+原始类型和对象类型在复制克隆的时候是有很大区别的
+原始类型存储的是简单地数据段
+对象类型存储的是引用地址
+
+什么是深度和浅克隆？
+浅：原始类型值传递，引用类型引用传递
+深：属性和方法都复制了，但是呢对新对象的修改不会影响到原来的对象
+
+
+var a=1;
+var b=a;       //克隆a给b
+b=2;
+console.log(a)  //1
+console.log(b)  //2
+可以看出对简单的数据采用普通的克隆方式也能得到正确的结果，这是因为简单类型存储的是那个实际的数据
+
+
+var fn1=function(){
+	alert(1);
+}
+var fn2=fn1;   //克隆fn1给fn2
+fn2=function(){alert(2);};  //改写fn2
+console.log(m())  //1
+console.log(n());//2
+
+大家能看到，我们直接通过普通赋值的方式，就实现了函数的克隆，并且不会影响之前的对象。原因就是函数的克隆会在内存单独开辟一块空间，互不影响。
+
+//对象的克隆
+
+var girl{
+	name:"lifurong";
+	age:20
+}
+
+function clone(obj){
+	var newobj={};
+	for(var key in obj){
+	newobj[key]=obj[key];
+	}
+	return newobj;
+}
+
+
+<script>
+	var girl={
+	name:"lifurong",
+	age:20,
+	address:{
+		city:"beijing"
+	}
+}
+
+function clone(obj){
+	var newobj={};
+	for(var key in obj){
+	newobj[key]=obj[key];
+	}
+	return newobj;
+}
+
+var newgirl=clone(girl);
+console.log(newgirl.address.city); //beijing
+console.log(girl.name);            //lifurong
+console.log(girl.address.city);      //beijing
+
+newgirl.address.city="shanghai";
+newgirl.name="tracy";
+console.log(girl.name);//lifurong  说明属性可以克隆
+console.log(girl.address.city);//shanghai  对象没有克隆成功
+
+//通过上面的代码，大家能看到，经过对象克隆以后，我修改newgirl的地址，发现原对象gile也被修改了。这说明对象的克隆不够彻底，那也就是说深度克隆失败！
+
+/*
+深克隆的实现:元素是原始类型或者函数的时候才可以被克隆，当元素是array或者是object的话，不可以克隆
+为了保证对象的所有属性都被复制到，我们必须知道如果for循环以后，得到的元素仍是Object或者Array，那么需要再次循环，直到元素是原始类型或者函数为止。*/
+
+//深度克隆
+function deepClone(obj){
+    var result,oClass=isClass(obj);
+        //确定result的类型
+    if(oClass==="Object"){
+        result={};
+    }else if(oClass==="Array"){
+        result=[];
+    }else{
+        return obj;
+    }
+    for(key in obj){
+        var copy=obj[key];
+        if(isClass(copy)=="Object"){
+            result[key]=arguments.callee(copy);//递归调用
+        }else if(isClass(copy)=="Array"){
+            result[key]=arguments.callee(copy);
+        }else{
+            result[key]=obj[key];
+        }
+    }
+    return result;
+}
+//返回传递给他的任意对象的类
+function isClass(o){
+    if(o===null) return "Null";
+    if(o===undefined) return "Undefined";
+    return Object.prototype.toString.call(o).slice(8,-1);
+}
+
+</script>
+	
+</body>
+</html>
