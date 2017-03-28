@@ -1,27 +1,34 @@
 
+// 输入的是一行数据RA，获取这个数据并放在数组里
+var readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+var args = [];
+rl.on('line', function(str) {
+    args.push(str);//读取数据
+    rl.close();
+});
+rl.on('close', function() {
+    var arr = args[0].trim().split('');//去空格然后分割成数组['R','A']
+    //...对数组进行操作，然后输出
+    console.log(result);
+}
 
-
+//输入的是一个数字8
 var readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 rl.on('line', function count(n) {
-    var result = 0;
-    do {
-        var x = Math.floor(n / 3);
-        var y = n % 3;
-        result += x;
-        n = x + y;
-    } while (x > 0);
-    if (n === 2) {
-        result++;
-    };
+    //对n进行操作
     console.log(result);
 }
 });
 
-
+//输入了一行数据‘a b’
 process.stdin.resume();
 process.stdin.setEncoding('ascii');
 
@@ -37,18 +44,23 @@ process.stdin.on('end', function() {
     var nLine = 0;
 
     while (nLine < input_array.length) {
-        var line = input_array[nLine++].trim();
+        var line = input_array[nLine++].trim();//读取每一行的数据
         if (line === '') {
             continue;
         }
         var input_arrays = line.split(' ');
-        var a = +input_arrays[0];
+        var a = +input_arrays[0];//转化为数字
         var b = +input_arrays[1];
         console.log(a + b);
     }
 });
 
-
+/*输入了多行数据
+n（3个）
+1
+2
+3
+*/
 var readline = require('readline');
 var num = 0; //初始状态为0，表示还没开始读取
 var arr = [],
