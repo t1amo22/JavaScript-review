@@ -74,7 +74,7 @@ console.log(girl.address.city);      //beijing
 
 newgirl.address.city="shanghai";
 newgirl.name="tracy";
-console.log(girl.name);//lifurong  说明属性可以克隆
+console.log(girl.name);//lifurong  说明原始类型的属性可以克隆
 console.log(girl.address.city);//shanghai  对象没有克隆成功
 
 //通过上面的代码，大家能看到，经过对象克隆以后，我修改newgirl的地址，发现原对象gile也被修改了。这说明对象的克隆不够彻底，那也就是说深度克隆失败！
