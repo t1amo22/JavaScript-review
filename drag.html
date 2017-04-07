@@ -14,7 +14,7 @@
         width: 100px;
         height: 100px;
         background-color: red;
-        position: relative;
+        position: relative; 
     }
     </style>
 </head>
@@ -34,19 +34,19 @@
 
 
     var box = document.getElementById('box');
-    var ww = document.documentElement.clientWidth;
-    var ww1 = document.documentElement.clientHeight; //浏览器的宽和高
-    console.log(document.documentElement.clientWidth); //HTML元素
+    var screenwidth = document.documentElement.clientWidth;
+    var screenheight = document.documentElement.clientHeight; //浏览器的宽和高
+    //console.log(document.documentElement.clientWidth); //HTML元素
 
     box.onmousedown = function(ev) {
         var ev = ev || window.event;
-        console.log(ev.clientX)
+       /* console.log(ev.clientX)
         console.log(ev.clientY) //返回当（事件触发时的）点击box的时候，鼠标指针的水平坐标。
 
-        /* console.log(box.offsetLeft)//返回元素的水平偏移位置
-         console.log(box.offsetTop)	//返回元素的垂直偏移位置。*/
+         console.log(box.offsetLeft)//返回元素的水平偏移位置
+         console.log(box.offsetTop	)/*//*/返回元素的垂直偏移位置。*/
 
-        var a = ev.clientX - box.offsetLeft;
+        var a = ev.clientX - box.offsetLeft;//盒子的宽度
         var b = ev.clientY - box.offsetTop;
 
         /* document.onmousemove=function(e){
@@ -55,23 +55,36 @@
 
         document.onmousemove = function(ev) {
             var ev = ev || window.event;
+           
 
 
             var c = ev.clientX - a; //设置水平定位位置
             var d = ev.clientY - b; //设置垂直（top）定位位置
             //浏览器边界情况
+/*            左边*/
             if (c <= 0) {
                 c = 0;
             }
-            //if (a>=ww-box.clientWidth) {
-            //       c=ww-box.clientWidth;
-            // }
+         
+            /*右边*/
+
+            console.log(c);
+
+            if (c>=screenwidth-box.clientWidth) {
+                  c=screenwidth-box.clientWidth;
+
+                  console.log(screenwidth)
+            }
+        
+            // 上边
             if (d <= 0) {
                 d = 0;
             }
-            // if (b>=ww1-box.clientHeight) {
-            //       d=ww1-box.clientHeight;
-            // }
+             
+            /*下边*/ 
+            if (d>=screenheight-box.clientHeight) {
+                  d=screenheight-box.clientHeight;
+            }
             box.style.left = c + 'px';
             box.style.top = d + 'px';
         }
