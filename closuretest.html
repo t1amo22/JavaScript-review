@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>closureTest</title>
+	<style type="text/css" media="screen">
+
+		li{
+			list-style: none;
+			width: 100px;
+			height: 35px;
+			background-color: pink;
+			border:1px solid red;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li>0</li>
+		<li>1</li>
+		<li>2</li>
+	</ul>
+	<script type="text/javascript">
+      window.onload=function(){
+      	/*方法一：循环*/
+         /*var li=document.getElementsByTagName("li");
+         for (var i = 0; i < li.length; i++) {
+         	li[i].onclick=(function(i){
+         		return function(){
+         			alert(i);
+         		}
+         	})(i)
+         };*/
+
+         //方法二：事件代理
+         var ul=document.getElementsByTagName("ul")[0];
+         ul.onclick=function(e){
+            console.log(e.target.innerHTML)
+         }
+      }
+
+	</script>
+</body>
+</html>

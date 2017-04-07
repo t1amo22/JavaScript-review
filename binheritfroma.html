@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>面向对象继承实例</title>
+    <script type="text/javascript">
+    window.onload = function() {
+        function parent(age, name) {
+            this.age = age;
+            this.name = name;
+        }
+        
+        parent.prototype.show = function() {
+            alert('父级方法');
+        }
+
+        function child(age, name, job) {
+            parent.apply(this, arguments);
+            this.job = job;
+        }
+        (function() {
+            for (var i in parent.prototype) {
+                child.prototype[i] = parent.prototype[i]
+            }
+        })();
+
+        var b = new parent(14, '侠客行');
+        var a = new child(15, '狼侠', '侠客');
+        a.show();
+
+    }
+    </script>
+</head>
+
+<body>
+    <h1>面向对象继承实例</h1>
+    <p>经常看到面试题有关继承问题 a如何继承b 决定写一下，其实继承就是继承父级的属性和方法</p>
+</body>
+
+</html>
