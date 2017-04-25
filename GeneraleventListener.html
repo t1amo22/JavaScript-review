@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GEL</title>
+</head>
+
+<body>
+    <button id="btn">button</button>
+    <script type="text/javascript">
+    window.onload = function() {
+        var Event = {
+            /*视能力分别使用dom2||IE||dom0方式 来绑定事件*/
+            addEvent: function(ele, type, fn) {
+                if (ele.addEventListener) {
+                    ele.addEventListener(type, fn, false);
+                } else if (ele.attachEvent) {
+                    ele.attachEvent('on' + type, function() {
+                        fn.call(ele);
+                    });
+                } else {
+                    ele['on' + type] = fn;
+                }
+            },
+            removeEvent: function(ele, type, fn) {
+                if (ele.removeEventListener) {
+                    ele.removeEventListener(type, fn, false);
+                } else if (ele.detachEvent) {
+                    ele.detachEvent('on' + type, fn);
+                } else {
+                    ele['on' + type] = null;
+                }
+            },
+            stopProrpgation: function(e) {
+            	
+                e = this.getEvent(e);
+                console.log(e);
+                if (e.stopProrpgation) {
+                    e.stopProrpgation();
+                } else {
+                    e.cancleBubble = true;
+                }
+            },
+            preventDefault: function() {},
+            getEvent: function(e) {
+            	
+                return e || window.event;
+            },
+            getTarget: function(e) {
+                var e = this.getEvent(e);
+                var target = e.target || e.srcElement;
+                if (target.nodeTypr === 3) {
+                    target = target.parentNode;
+                }
+                return target;
+            }
+        }
+
+
+        var btn = document.getElementById('btn');
+
+        function handler() {
+            /*alert(this.id);*/
+            Event.getEvent();
+            Event.stopProrpgation();
+            Event.preventDefault();
+        }
+
+
+        Event.addEvent(btn, 'click', handler);
+    
+       /* Event.removeEvent(btn, 'click', handler);*/
+    
+        
+
+    }
+    </script>
+</body>
+
+</html>
