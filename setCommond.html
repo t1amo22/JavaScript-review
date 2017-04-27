@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>命令者模式</title>
+</head>
+<body>
+<p>点击执行弹出打开电视机，点击撤销弹出关闭电视机</p>
+	<button id="execute">执行</button>
+	<button id="undo">撤销</button>
+	<script type="text/javascript">
+	window.onload=function(){
+		//receiver
+		var Tv={
+			open:function(){
+				alert("打开电视机");
+			},
+			close:function(){
+				alert("关闭电视机");
+			}
+		};
+        
+        var createCommand=function(receiver){
+            var execute=function(){
+            	return receiver.open();
+            };
+            var undo=function(){
+            	return receiver.close();
+            };
+            return{
+            	execute:execute,
+            	undo:undo
+            }
+        }
+ 		
+ 		var setCommond=function(command){
+ 			document.getElementById("execute").onclick=function(){
+ 				command.execute();
+ 			}
+ 			document.getElementById("undo").onclick=function(){
+ 				command.undo();
+ 			}
+ 		}
+
+
+
+
+
+		setCommond(createCommand(Tv));
+	}
+	</script>
+</body>
+</html>
