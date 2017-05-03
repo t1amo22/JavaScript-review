@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+</head>
+
+<body>
+    <canvas id="drawing" width="200" height="200">
+    </canvas>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var draw = $("#drawing").get(0); //取得绘图上下文,把jquery对象转化为dom对象
+
+        if (draw.getContext) { //必须检查浏览器是否支持
+
+            var context = draw.getContext("2d"); //获取2d绘图上下文对象的引用
+           context.strokeStyle = "red"; //描边
+            context.fillStyle = "rgba(0,0,225,0.2)"; //填充的颜色
+
+            context.fillRect(20, 20, 50, 50); //绘制一个坐标（10,10）长度50宽50的矩形
+
+            context.strokeRect(20, 20, 50, 50);
+
+            context.fillRect(10, 10, 50, 50); 
+            
+        }
+
+    })
+    </script>
+</body>
+
+</html>
