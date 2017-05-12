@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>将nodelist或者arguments对象转化成数组</title>
+</head>
+
+<body>
+    <ul id="list">
+        <li>hahaha</li>
+        <li>hahaha</li>
+        <li>hahaha</li>
+        <li>hahaha</li>
+    </ul>
+    <script type="text/javascript">
+    var ul = document.getElementById("list");
+    var nodelist = ul.childNodes;
+
+    var arr = Array.prototype.slice.call(nodelist, 0);
+    var brr=Array.from(nodelist);
+    console.log(Array.isArray(nodelist))
+
+   /* function a(a, b, c) {
+        console.log(Array.prototype.slice.call(arguments, 0))
+    }
+
+    a(1, 2, 3)*/
+
+
+    function converToArray(nodelist) {
+        var arr = [];
+        var len = nodelist.length;
+        try {
+            arr = Array.prototype.slice.call(nodelist, 0); //针对非IE浏览器
+    } catch (error) {
+
+        for (var i = 0; i < len; i++) {
+            arr.push(nodelist[i])
+        }
+    }
+    return arr;
+    }
+
+
+    </script>
+</body>
+
+</html>
