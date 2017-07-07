@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="box">
+        hello world;
+    </div>
+    <script>
+    function Base() {
+        this.eles = [];
+        this.getId = function(id) {
+            this.eles.push(document.getElementById(id));
+            return this;
+        }
+    }
+
+    Base.prototype.css = function(attr, val) {
+        this.eles.forEach(function(x) {
+            x.style[attr] = val;
+        })
+        return this;
+    }
+
+    Base.prototype.html = function(text) {
+        if (arguments.length === 0) {
+            return this.eles[0].innerHTML;
+        } else {
+            this.eles.forEach(function(x) {
+                x.innerHTML = text;
+            })
+            return this;
+        }
+
+    }
+
+    var $ = new Base();
+
+  console.log($.getId("box").css("color","red").html("hi")) 
+   
+    </script>
+</body>
+
+</html>
