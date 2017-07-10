@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+    function check(form) {
+        with(form){
+        	//必填项
+        	if (!userName.value) {
+        		alert("请输入用户名")
+        		return false;
+        	}
+        	if (!tel.value) {
+        		alert("请输入手机号")
+        		return false;
+        	}
+            
+
+        	if (!/^1[34578]\d{9}/.test(tel.value)) {
+        		alert("不是正确的手机号码格式！");
+        		return false;
+        	}
+
+        	if (!checkEmail(email.value)) {
+                  alert("不是正确的邮箱格式！");
+                  return false;
+        	}
+
+
+        }
+    }
+
+    function checkEmail(email){
+    	var index=email.indexOf("@");
+    	var dot=email.lastIndexOf('.');
+
+    	if (index==-1 || index<1 || dot-index <2) {
+    		return false
+    	}
+    	return true;
+    }
+    
+    </script>
+</head>
+
+<body>
+    <form action="" method="get/post" onsubmit="return check(this)">
+        <p>
+            <span>*</span>
+            <label for="userName">姓名</label>
+            <input id="userName" type="text" name="userName">
+            <span></span>
+        </p>
+        <p>
+            <label for="email" >邮箱</label>
+            <input id="email" type="text" name="email" >
+            <span></span>
+        </p>
+        <p>
+            <span>*</span>
+            <label for="tel">手机号</label>
+            <input id="tel" type="text" name="tel">
+            <span></span>
+        </p>
+        <p>
+            <label for="comments">评论</label>
+            <textarea name="comments"></textarea>
+            <span></span>
+        </p>
+        <input type="submit" value="提交">
+    </form>
+</body>
+
+</html>
