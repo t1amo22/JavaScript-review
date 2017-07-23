@@ -1,0 +1,125 @@
+
+
+// 定义lQuery对象
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div class="a">haha </div>
+<div id="b">haha </div>
+	<script>
+	    function bind(obj,type,fn){
+				if (obj.addEventListener) {
+					obj.addEventListener(type,fn,false);
+				}else{
+					obj.attachEvent('on'+type,fn);
+				}
+			}
+		
+		function JQuery(arg){
+			this.items=[];
+
+			function getClass(arg){
+				return  document.getElementsByClassName(arg.substring(1));
+				
+			}
+
+
+			function getId(arg){
+				return document.getElementById(arg.substring(1));
+				
+			}
+			function getDom(arg){
+				switch (arg.charAt(0)){
+					case '.':
+						this[0]=getClass(arg);
+						this.items=Array.prototype.slice.call(this[0]);
+						break;
+					case '#':
+						this[0]=getId(arg);
+						this.items.push(this[0])
+						break;
+				}
+			}
+			  //绑定事件
+		    
+
+			// 获取DOM元素
+			
+		    switch( typeof arg ){
+		     	 case 'function' : 
+		     	 //实现$(fn)
+		     	  		bind(window,'load',arg);
+		     	  		break;
+		     	 case 'string':
+		     	 // $(".class")  $("#id")  $(dom)
+		     	
+		     	 		getDom.call(this,arg);
+		     	 		break;
+		     	 //$(dom)
+		     	 case 'object':
+		     	 		this[0]=arg;
+		     	 		this.items.push(arg);
+		     	 		break;
+		    }
+		  
+		   
+		}
+        function $(arg){
+			    return new JQuery(arg);
+		}
+
+		JQuery.fn=JQuery.prototype={
+			  css : function(attr, val) {
+			        this.items.forEach(function(x) {
+			            x.style[attr] = val;
+			        })
+			        return this;
+              },
+              eq : function(n){
+              	    return $(this.items[n]);
+              },
+              html : function(arg) {
+		        if (!arg) {
+		        	return this.items[0].innerHTML
+		        }else{
+		        	this.items.forEach(function(x){
+		        		x.innerHTML=arg;
+		        	})
+		        	return this;
+		        }
+              },
+              on : function(type,fn){
+	        	this.items.forEach(function(x){
+	        		bind(x,type,fn);
+	        	})
+	        	return this;
+       		  },
+       		  click : function(fn){
+	        	this.on('click',fn);
+	        	return this;
+        	  },
+        	  mouseover : function(fn){
+	        	this.on('mouseover',fn);
+	        	return this;
+              },
+              hide : function(){
+	        	this.items.forEach(function(x){
+	        		x.style.display="none";
+	        	})
+	        	return this;
+       		  },
+       		  show : function(){
+		        	this.items.forEach(function(x){
+		        		x.style.display="block";
+		        	})
+		        	return this;
+        	  }
+
+		};
+	</script>
+</body>
+</html>
